@@ -88,5 +88,7 @@ def SCA(objf, lb, ub, dim, SearchAgents_no, Max_iter):
     s.convergence = Convergence_curve
     s.optimizer = "SCA"
     s.objfname = objf.__name__
+    s.best = Dest_score
+    s.bestIndividual = Dest_pos
 
     return s
