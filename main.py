@@ -200,7 +200,7 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='WOA'):
   #Max_iter = 30           # edit me
 
   # runs optimizer (to get answer)
-  raw_woa_ans = sca.SCA(objf, 1, len(prefs_input[0]), dim, SearchAgents, Max_iter)
+  raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents, Max_iter)
   raw_woa_ans_vect = raw_woa_ans.bestIndividual
 
   print('raw output')
