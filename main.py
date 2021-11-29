@@ -14,9 +14,12 @@ import numpy as np
 
 '''
 Let's assume nurse prefs are expressed as "aversions", scale of 1-4, where 4 is maximum aversion.
-Let's assume for now that we have 5 nurses and 7 days, and we need to schedule 2 nurses per day.
-So that's 14 time-slots.  Each nurse must work 2 or 3 shifts total over the 7 days.
-Let's assume that there are no hard constraints EXCEPT: no nurse may work adjacent days (no worries about wraparound (for now))
+Let's assume for now that we are fulfilling a weekly schedule for full-time nurses.
+We have 15 shifts per day: 6 day shifts, 6 afternoon shifts, and 3 night shifts.
+15 shifts per day * 7 days = 105 shifts to fulfill per week.
+If we assume each nurse works 5 shifts a week (40 hour work week),
+Then we will observe 105/5 = 21 nurses to fill all shifts.
+Our data will be 21 full-time nurses and 4 on-call nurses who will have no preference for shifts.
 '''
 
 '''
@@ -37,14 +40,34 @@ prefs_input = [
     [1, 1, 3, 4, 2, 1, 1],
     [2, 2, 3, 4, 4, 1, 1],
     [1, 3, 4, 2, 1, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1]
+    [1, 3, 4, 2, 1, 1, 1],
+    [4, 4, 2, 4, 1, 3, 2],
+    [1, 1, 3, 4, 2, 1, 1],
+    [2, 2, 3, 4, 4, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [4, 4, 2, 4, 1, 3, 2],
+    [1, 1, 3, 4, 2, 1, 1],
+    [2, 2, 3, 4, 4, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [4, 4, 2, 4, 1, 3, 2],
+    [1, 1, 3, 4, 2, 1, 1],
+    [2, 2, 3, 4, 4, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1]
 ]
 
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 10
+ATTEMPTS_ALLOWED = 1
 
 #how many times we run the whole test to average out the randomness of our results
-TEST_ITERATIONS = 25
+TEST_ITERATIONS = 5
 
 
 #-----------------helper functions-------------- 
@@ -77,7 +100,7 @@ def calculationTotalAversion(prefs, assignment):
       days_worked[shift[day]-1] += 1 
 
   for nurse in days_worked:
-    if nurse < 2 or nurse > 3:
+    if nurse > 5:
       ans += HARD_HATE
 
   # soft constraints: matches current schedule vs preferences
@@ -180,7 +203,7 @@ def formatResults(sum_results):
 #-----------run optimization--------------
 # functions that utilize the algorithms alongside helper functions to actually optimize our schedule
 
-def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='WOA'):
+def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   # creates a benchmark function (called objf)
   def objf(x): 
@@ -192,15 +215,15 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='WOA'):
     return calculationTotalAversion(prefs, assignment)
 
   # sets up arguments for optimizer (dim, SearchAgents_no, Max_iter)
-  NUM_SHIFTS = 2
+  NUM_SHIFTS = 15
 
   num_days = len(prefs[0])
   dim = NUM_SHIFTS * num_days
-  #SearchAgents_no = 30    # edit me
-  #Max_iter = 30           # edit me
+  SearchAgents_no = 20      # edit me
+  Max_iter = 10000          # edit me
 
   # runs optimizer (to get answer)
-  raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents, Max_iter)
+  raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents_no, Max_iter)
   raw_woa_ans_vect = raw_woa_ans.bestIndividual
 
   print('raw output')
