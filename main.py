@@ -83,13 +83,14 @@ def calculationTotalAversion(prefs, assignment):
   for day in range(len(assignment[0])):
     if assignment[0][day] == assignment[1][day]:
       ans += HARD_HATE * 10
-  
+    if assignment[1][day] == assignment[2][day]:
+      ans += HARD_HATE * 10
   
   # hard constraint: no adjacent workdays
-  for shift in assignment:
-    for day in range(1, len(shift)):
-      if shift[day-1] == shift[day]:
-        ans += HARD_HATE
+  # for shift in assignment:
+  #   for day in range(1, len(shift)):
+  #     if shift[day-1] == shift[day]:
+  #       ans += HARD_HATE
   
       
   # hard constraint: at most 3 workdays
@@ -99,6 +100,7 @@ def calculationTotalAversion(prefs, assignment):
     for day in range(len(shift)):
       days_worked[shift[day]-1] += 1 
 
+  # hard constraint: at most 5 workdays
   for nurse in days_worked:
     if nurse > 5:
       ans += HARD_HATE
@@ -215,12 +217,12 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
     return calculationTotalAversion(prefs, assignment)
 
   # sets up arguments for optimizer (dim, SearchAgents_no, Max_iter)
-  NUM_SHIFTS = 15
+  NUM_SHIFTS = 3
 
   num_days = len(prefs[0])
   dim = NUM_SHIFTS * num_days
   SearchAgents_no = 20      # edit me
-  Max_iter = 10000          # edit me
+  Max_iter = 1000          # edit me
 
   # runs optimizer (to get answer)
   raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents_no, Max_iter)
@@ -235,6 +237,8 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   raw_woa_ans_vect = [math.floor(elt) for elt in raw_woa_ans_vect]
   woa_ans = restructure(raw_woa_ans_vect, len(prefs[0]))
+  print('Restructure Result:')
+  print(woa_ans)
 
   '''
   print('converted output')
