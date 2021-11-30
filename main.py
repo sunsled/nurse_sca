@@ -40,26 +40,6 @@ prefs_input = [
     [1, 1, 3, 4, 2, 1, 1],
     [2, 2, 3, 4, 4, 1, 1],
     [1, 3, 4, 2, 1, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [4, 4, 2, 4, 1, 3, 2],
-    [1, 1, 3, 4, 2, 1, 1],
-    [2, 2, 3, 4, 4, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [4, 4, 2, 4, 1, 3, 2],
-    [1, 1, 3, 4, 2, 1, 1],
-    [2, 2, 3, 4, 4, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [4, 4, 2, 4, 1, 3, 2],
-    [1, 1, 3, 4, 2, 1, 1],
-    [2, 2, 3, 4, 4, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1]
 ]
 
@@ -79,13 +59,21 @@ def calculationTotalAversion(prefs, assignment):
   ans = 0
 
  
-  # hard constraint: same nurse not on both shifts
+  # hard constraint: same nurse not on shift on the same day
   for day in range(len(assignment[0])):
     if assignment[0][day] == assignment[1][day]:
       ans += HARD_HATE * 10
     if assignment[1][day] == assignment[2][day]:
       ans += HARD_HATE * 10
+    if assignment[0][day] == assignment[2][day]:
+      ans += HARD_HATE * 10
   
+  # Hard Constraint: cannot have a Day shift after a Night shift in the previous day
+  for day in range(len(assignment[0])):
+    if day != 0:
+      if assignment[0][day] == assignment[2][day - 1]:
+        ans += HARD_HATE * 10
+
   # hard constraint: no adjacent workdays
   # for shift in assignment:
   #   for day in range(1, len(shift)):
@@ -237,14 +225,12 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   raw_woa_ans_vect = [math.floor(elt) for elt in raw_woa_ans_vect]
   woa_ans = restructure(raw_woa_ans_vect, len(prefs[0]))
-  # print('Restructure Result:')
-  # print(woa_ans)
-
-  
-  print('converted output')
+ 
+ 
+  print('\nconverted output')
   for x in woa_ans:
     print(x)
-  
+  print('')
   return [woa_ans, raw_woa_ans.best]
 
 
