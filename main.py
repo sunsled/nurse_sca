@@ -40,7 +40,7 @@ prefs_input = [
     [1, 1, 3, 4, 2, 1, 1],
     [2, 2, 3, 4, 4, 1, 1],
     [1, 3, 4, 2, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1]
+    [1, 1, 1, 1, 1, 1, 1],
 ]
 
 #how many tries we give our algorithm to find a viable solution
@@ -81,16 +81,14 @@ def calculationTotalAversion(prefs, assignment):
   #       ans += HARD_HATE
   
       
-  # hard constraint: at most 3 workdays
-  # hard constraint: at least 2 workdays
   days_worked = [0] * len(prefs)
   for shift in assignment:
     for day in range(len(shift)):
       days_worked[shift[day]-1] += 1 
 
-  # hard constraint: at most 5 workdays
+  # hard constraint: at most 5 workdays or at least 1 day
   for nurse in days_worked:
-    if nurse > 5:
+    if nurse > 5 or nurse < 1:
       ans += HARD_HATE
 
   # soft constraints: matches current schedule vs preferences
