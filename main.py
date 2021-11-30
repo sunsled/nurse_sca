@@ -42,6 +42,8 @@ prefs_input = [
     [1, 3, 4, 2, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1],
 ]
+#shifts
+SHIFTS = 3
 
 #how many tries we give our algorithm to find a viable solution
 ATTEMPTS_ALLOWED = 3
@@ -203,7 +205,7 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
     return calculationTotalAversion(prefs, assignment)
 
   # sets up arguments for optimizer (dim, SearchAgents_no, Max_iter)
-  NUM_SHIFTS = 3
+  NUM_SHIFTS = SHIFTS
 
   num_days = len(prefs[0])
   dim = NUM_SHIFTS * num_days
