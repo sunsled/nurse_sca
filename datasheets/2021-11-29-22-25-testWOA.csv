@@ -1,0 +1,3 @@
+WOA,Test
+Total Runs,Success Rate,Average Tries,Search Agents,Iterations,Average Time to Find Solution,Average Time Elapsed Per WOA (~Avg Total/Tries)
+400,1.0,1.2,20,20,12.078543949127198,7.439638376235962
