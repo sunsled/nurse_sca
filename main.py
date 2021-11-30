@@ -64,7 +64,7 @@ prefs_input = [
 ]
 
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 1
+ATTEMPTS_ALLOWED = 3
 
 #how many times we run the whole test to average out the randomness of our results
 TEST_ITERATIONS = 5
@@ -237,14 +237,14 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   raw_woa_ans_vect = [math.floor(elt) for elt in raw_woa_ans_vect]
   woa_ans = restructure(raw_woa_ans_vect, len(prefs[0]))
-  print('Restructure Result:')
-  print(woa_ans)
+  # print('Restructure Result:')
+  # print(woa_ans)
 
-  '''
+  
   print('converted output')
   for x in woa_ans:
     print(x)
-  '''
+  
   return [woa_ans, raw_woa_ans.best]
 
 
