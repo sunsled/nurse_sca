@@ -36,17 +36,28 @@ No nurse may work adjacent shifts.
 
 #nurse preferences for working on a given day. nurses do not have individual shift preferences, only day preferences
 prefs_input = [
-    [4, 4, 2, 4, 1, 3, 2],
-    [1, 1, 3, 4, 2, 1, 1],
-    [2, 2, 3, 4, 4, 1, 1],
-    [1, 3, 4, 2, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
+    [4, 4, 2, 4, 1, 3, 2, 2, 2, 3, 4, 4, 1, 1, 1, 3, 4, 2, 1, 1, 1, 2, 2, 3, 4, 4, 1, 1],
+    [1, 1, 3, 4, 2, 1, 1, 1, 3, 4, 2, 1, 1, 1, 4, 4, 2, 4, 1, 3, 2, 1, 3, 4, 2, 1, 1, 1],
+    [2, 2, 3, 4, 4, 1, 1, 1, 3, 4, 2, 1, 1, 1, 2, 1, 1, 1, 3, 4, 2, 2, 3, 4, 4, 1, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1, 3, 4, 2, 1, 1, 1, 4, 4, 2, 1, 1, 1, 3, 4, 1, 3, 4, 2, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 1, 1, 1, 1, 1, 3, 4, 2, 1, 4, 4, 2, 4, 1, 3, 2],
+    [4, 4, 2, 4, 1, 3, 2, 2, 2, 3, 4, 4, 1, 1, 1, 3, 4, 2, 1, 1, 1, 2, 2, 3, 4, 4, 1, 1],
+    [1, 1, 3, 4, 2, 1, 1, 1, 3, 4, 2, 1, 1, 1, 4, 4, 2, 4, 1, 3, 2, 1, 3, 4, 2, 1, 1, 1],
+    [2, 2, 3, 4, 4, 1, 1, 1, 3, 4, 2, 1, 1, 1, 2, 1, 1, 1, 3, 4, 2, 2, 3, 4, 4, 1, 1, 1],
+    [1, 3, 4, 2, 1, 1, 1, 3, 4, 2, 1, 1, 1, 4, 4, 2, 1, 1, 1, 3, 4, 1, 3, 4, 2, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 1, 1, 1, 1, 1, 3, 4, 2, 1, 4, 4, 2, 4, 1, 3, 2]
 ]
 #shifts
 SHIFTS = 3
 
+#search agents
+AGENTS = 20
+
+#iterations
+ITERATIONS = 1000
+
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 3
+ATTEMPTS_ALLOWED = 10
 
 #how many times we run the whole test to average out the randomness of our results
 TEST_ITERATIONS = 5
@@ -90,7 +101,7 @@ def calculationTotalAversion(prefs, assignment):
 
   # hard constraint: at most 5 workdays or at least 1 day
   for nurse in days_worked:
-    if nurse > 5 or nurse < 1:
+    if nurse > 20 or nurse < 4:
       ans += HARD_HATE
 
   # soft constraints: matches current schedule vs preferences
@@ -209,8 +220,8 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   num_days = len(prefs[0])
   dim = NUM_SHIFTS * num_days
-  SearchAgents_no = 20      # edit me
-  Max_iter = 1000          # edit me
+  SearchAgents_no = AGENTS
+  Max_iter = ITERATIONS
 
   # runs optimizer (to get answer)
   raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents_no, Max_iter)
