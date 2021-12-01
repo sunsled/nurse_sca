@@ -45,8 +45,14 @@ prefs_input = [
 #shifts
 SHIFTS = 3
 
+#Search Agents
+AGENTS = 20
+
+#Iterations
+ITERATIONS = 1000
+
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 3
+ATTEMPTS_ALLOWED = 10
 
 #how many times we run the whole test to average out the randomness of our results
 TEST_ITERATIONS = 5
@@ -209,8 +215,8 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
   num_days = len(prefs[0])
   dim = NUM_SHIFTS * num_days
-  SearchAgents_no = 20      # edit me
-  Max_iter = 1000          # edit me
+  SearchAgents_no = AGENTS
+  Max_iter = ITERATIONS
 
   # runs optimizer (to get answer)
   raw_woa_ans = sca.SCA(objf, 1, len(prefs_input), dim, SearchAgents_no, Max_iter)
