@@ -364,9 +364,9 @@ def testAlgo(doWOA, doGA):
 
     end_results = formatResults(sum_results)
 
-    convertToCsv(end_results, 'testWOA', 'WOA')
+    convertToCsv(end_results, 'testSCA', 'SCA')
 
-    print('WOA complete')
+    print('SCA complete')
 
   #test case using Genetic Algorithm
   if doGA:
