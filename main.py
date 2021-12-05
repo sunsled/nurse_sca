@@ -45,17 +45,18 @@ prefs_input = [
 
 #Algorithm
 ALGO = 'SCA'
+
 #shifts
 SHIFTS = 3
 
 #Search Agents
-AGENTS = 5
+AGENTS = 20
 
 #Iterations
 ITERATIONS = 1000
 
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 100
+ATTEMPTS_ALLOWED = 10
 
 #how many times we run the whole test to average out the randomness of our results
 TEST_ITERATIONS = 20
