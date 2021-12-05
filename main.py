@@ -15,19 +15,19 @@ import numpy as np
 '''
 Let's assume nurse prefs are expressed as "aversions", scale of 1-4, where 4 is maximum aversion.
 Let's assume for now that we are fulfilling a weekly schedule for full-time nurses.
-We have 15 shifts per day: 6 day shifts, 6 afternoon shifts, and 3 night shifts.
-15 shifts per day * 7 days = 105 shifts to fulfill per week.
+We have 3 shifts per day: day, evening, night.
+3 shifts per day * 7 days = 21 shifts to fulfill per week.
 If we assume each nurse works 5 shifts a week (40 hour work week),
-Then we will observe 105/5 = 21 nurses to fill all shifts.
-Our data will be 21 full-time nurses and 4 on-call nurses who will have no preference for shifts.
+Then we will observe 21/5 = 4.2, which means we will need 5 nurses to fill all shifts
+Our data will be 4 full-time nurses and 1 on-call nurses who will have no preference for shifts.
 '''
 
 '''
 New constraints
 Let's assume nurse prefs are expressed as "aversions", scale of 1-4, where 4 is maximum aversion.
 Let's assume we have 5 nurses and 7 days.
-We need to schedule 1 nurse per day.
-Each nurse cannot work more than 2 shifts over 7 days.
+We need to schedule 3 nurses per day.
+Each nurse cannot work more than 5 shifts over 7 days.
 Every nurse must work at least 1 shift.
 No nurse may work adjacent shifts.
 '''
@@ -40,22 +40,25 @@ prefs_input = [
     [1, 1, 3, 4, 2, 1, 1],
     [2, 2, 3, 4, 4, 1, 1],
     [1, 3, 4, 2, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1]
 ]
+
+#Algorithm
+ALGO = 'SCA'
 #shifts
 SHIFTS = 3
 
 #Search Agents
-AGENTS = 20
+AGENTS = 5
 
 #Iterations
 ITERATIONS = 1000
 
 #how many tries we give our algorithm to find a viable solution
-ATTEMPTS_ALLOWED = 10
+ATTEMPTS_ALLOWED = 100
 
 #how many times we run the whole test to average out the randomness of our results
-TEST_ITERATIONS = 5
+TEST_ITERATIONS = 20
 
 
 #-----------------helper functions-------------- 
@@ -168,7 +171,7 @@ def convertToCsv(results, test, algo):
   with open(newSheetName, 'w', newline='') as writeFile:
     writer = csv.writer(writeFile)
     #end_results = [searchagents*iterations, success_rate, average tries, searchagents, iterations, average time elapsed]
-    results.insert(0, ['Total Runs', 'Success Rate', 'Average Tries', 'Search Agents', 'Iterations', 'Average Time to Find Solution', 'Average Time Elapsed Per WOA (~Avg Total/Tries)'])
+    results.insert(0, ['Algorithm', 'Success Rate', 'Average Tries', 'Search Agents', 'Iterations', 'Average Time to Find Solution', f'Average Time Elapsed Per {ALGO} (~Avg Total/Tries)'])
     results.insert(0, [algo, 'Test'])
 
 
@@ -199,7 +202,7 @@ def formatResults(sum_results):
 #-----------run optimization--------------
 # functions that utilize the algorithms alongside helper functions to actually optimize our schedule
 
-def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
+def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name=ALGO):
 
   # creates a benchmark function (called objf)
   def objf(x): 
@@ -241,7 +244,7 @@ def doNurseOptimization(prefs, SearchAgents, Max_iter, optimizer_name='SCA'):
 
 
 
-def doNurseOptimizationGA(prefs, SearchAgents, Max_iter, optimizer_name='WOA'):
+def doNurseOptimizationGA(prefs, SearchAgents, Max_iter, optimizer_name=ALGO):
 
   # creates a benchmark function (called objf)
   def objf(x): 
@@ -358,15 +361,15 @@ def testAlgo(doWOA, doGA):
         test_result = runTest2(prefs_input, current_combination[0], current_combination[1])
         end = time.time()
         #total runs, tries, searchagents, iterations, time, avg_time
-        results.append([current_combination[0] * current_combination[1], test_result[1], current_combination[0], current_combination[1], abs(end - start), test_result[2]])
+        results.append([ALGO, test_result[1], AGENTS, ITERATIONS, abs(end - start), test_result[2]])
         
       sum_results.append(results)
 
     end_results = formatResults(sum_results)
 
-    convertToCsv(end_results, 'testSCA', 'SCA')
+    convertToCsv(end_results, f'test{ALGO}', ALGO)
 
-    print('SCA complete')
+    print(f'{ALGO} complete')
 
   #test case using Genetic Algorithm
   if doGA:
