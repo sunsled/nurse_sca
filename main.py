@@ -55,7 +55,7 @@ AGENTS = 20
 #Iterations
 ITERATIONS = 1000
 
-#how many tries we give our algorithm to find a viable solution
+#Maximum attempts to try to find solution
 ATTEMPTS_ALLOWED = 10
 
 #how many times we run the whole test to average out the randomness of our results
